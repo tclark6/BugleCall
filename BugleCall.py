@@ -15,7 +15,7 @@
 #
 # Author: Timothy Clark
 # Version: 1.1
-# Git:
+# Git:https://github.com/tclark6/BugleCall
 ############################################################################
 
 import schedule
