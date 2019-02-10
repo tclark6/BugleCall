@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 ##############################################################################
@@ -14,8 +13,8 @@
 #       `------------|_| |_| |_|-----------------'J `-'
 #
 # Author: Timothy Clark
-# Version: 1.1
-# Git:https://github.com/tclark6/BugleCall
+# Version: 1.2
+# Git:
 ############################################################################
 
 import schedule
@@ -24,11 +23,32 @@ import time
 
 # call MP3s
 def steele():
-    subprocess.call(['C:/Users/Grant Clark/calls/steele1.mp3'], shell=True)
+    subprocess.call(['aplay /home/pi/steele1.wav'], shell=True)
+    start = time.time()
+    end = 100
+    while True:
+        if time.time() > start + end:
+            
+            #print('call stopped')
+            break
 def fatigue():
-    subprocess.call(['C:/Users/Grant Clark/calls/fatigue1.mp3'], shell=True)
+    subprocess.call(['aplay /home/pi/fatigue1.wav'], shell=True)
+     start = time.time()
+    end = 100
+    while True:
+        if time.time() > start + end:
+            
+            #print('call stopped')
+            break
 def assembly():
-    subprocess.call(['C:/Users/Grant Clark/calls/assembly1.mp3'], shell=True)
+    subprocess.call(['aplay /home/pi/assembly1.wav'], shell=True)
+     start = time.time()
+    end = 100
+    while True:
+        if time.time() > start + end:
+            
+            #print('call stopped')
+            break
 # Wednesday Schedule
 schedule.every().wednesday.at('14:55').do(fatigue)
 schedule.every().wednesday.at('15:00').do(assembly)
@@ -50,7 +70,7 @@ schedule.every().saturday.at('13:55').do(fatigue)
 schedule.every().saturday.at('14:00').do(assembly)
 schedule.every().saturday.at('14:50').do(steele)
 schedule.every().saturday.at('15:00').do(steele)
-schedule.every().saturday.at('15:50').do(steele)
+schedule.every().saturday.at('15:30').do(steele)
 schedule.every().saturday.at('16:00').do(steele)
 schedule.every().saturday.at('16:50').do(steele)
 
