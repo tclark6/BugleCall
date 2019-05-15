@@ -13,82 +13,89 @@
 #       `------------|_| |_| |_|-----------------'J `-'
 #
 # Author: Timothy Clark
-# Version: 1.2
+# Version: 2.0
 # Git:
 ############################################################################
 
 import schedule
 import subprocess
 import time
+import mysql.connector
+import pandas as pd
+from pandas import DataFrame as df
 
-# call MP3s
+connection = mysql.connector.connect(host='PI/ipAddress',
+                            user='*******',
+                            passwd='*****',
+                            db='*****',
+                            charset='utf8',
+                            use_unicode= True)
+cursor = connection.cursor()
+df = pd.read_sql("SELECT * FROM Schedule; ", con=connection )
+
 def steele():
-    subprocess.call(['aplay /home/pi/steele1.wav'], shell=True)
-    start = time.time()
-    end = 100
-    while True:
-        if time.time() > start + end:
-            
-            #print('call stopped')
-            break
+    subprocess.call(['C:/Users/Grant Clark/calls/steele1.mp3'], shell=True)
 def fatigue():
-    subprocess.call(['aplay /home/pi/fatigue1.wav'], shell=True)
-     start = time.time()
-    end = 100
-    while True:
-        if time.time() > start + end:
-            
-            #print('call stopped')
-            break
+    subprocess.call(['C:/Users/Grant Clark/calls/fatigue1.mp3'], shell=True)
 def assembly():
-    subprocess.call(['aplay /home/pi/assembly1.wav'], shell=True)
-     start = time.time()
-    end = 100
-    while True:
-        if time.time() > start + end:
-            
-            #print('call stopped')
-            break
-# Wednesday Schedule
-schedule.every().wednesday.at('14:55').do(fatigue)
-schedule.every().wednesday.at('15:00').do(assembly)
-schedule.every().wednesday.at('15:50').do(steele)
-schedule.every().wednesday.at('16:00').do(steele)
-schedule.every().wednesday.at('16:50').do(steele)
-schedule.every().wednesday.at('17:00').do(steele)
-schedule.every().wednesday.at('17:50').do(steele)
-# Friday Schedule
-schedule.every().friday.at('18:55').do(fatigue)
-schedule.every().friday.at('19:00').do(assembly)
-schedule.every().friday.at('19:50').do(steele)
-schedule.every().friday.at('20:00').do(steele)
-schedule.every().friday.at('20:50').do(steele)
-schedule.every().friday.at('21:00').do(steele)
-schedule.every().friday.at('21:50').do(steele)
-# Saturday Schedule
-schedule.every().saturday.at('13:55').do(fatigue)
-schedule.every().saturday.at('14:00').do(assembly)
-schedule.every().saturday.at('14:50').do(steele)
-schedule.every().saturday.at('15:00').do(steele)
-schedule.every().saturday.at('15:30').do(steele)
-schedule.every().saturday.at('16:00').do(steele)
-schedule.every().saturday.at('16:50').do(steele)
+    subprocess.call(['C:/Users/Grant Clark/calls/assembly1.mp3'], shell=True)
 
-schedule.every().saturday.at('19:55').do(fatigue)
-schedule.every().saturday.at('20:00').do(assembly)
-schedule.every().saturday.at('20:50').do(steele)
-schedule.every().saturday.at('21:00').do(steele)
-schedule.every().saturday.at('21:50').do(steele)
-#Sunday Schedule
-schedule.every().sunday.at('13:55').do(fatigue)
-schedule.every().sunday.at('14:00').do(assembly)
-schedule.every().sunday.at('14:50').do(steele)
-schedule.every().sunday.at('15:00').do(steele)
-schedule.every().sunday.at('15:50').do(steele)
-schedule.every().sunday.at('16:00').do(steele)
-schedule.every().sunday.at('16:50').do(steele)
-schedule.every().sunday.at('17:00').do(steele)
-schedule.every().sunday.at('17:50').do(steele)
+for (index, row) in df.iterrows():
+    day = df.at[index,'Day'] # This is the tweet's id
+    calltime = df.at[index,'Time'] # when the tweet posted
+    call = df.at[index,'BugleCall'] # content of the tweet
+
+    if day == 'monday':
+        if call == 'steele':
+            schedule.every().monday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().monday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().monday.at(calltime).do(assembly)
+    elif day == 'tuesday':
+        if call == 'steele':
+            schedule.every().tuesday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().tuesday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().tuesday.at(calltime).do(assembly)
+
+    elif day == 'wednesday':
+        if call == 'steele':
+            schedule.every().wednesday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().wednesday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().wednesday.at(calltime).do(assembly)
+    elif day == 'thursday':
+        if call == 'steele':
+            schedule.every().thursday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().thursday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().thursday.at(calltime).do(assembly)
+    elif day == 'friday':
+        if call == 'steele':
+            schedule.every().friday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().friday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().friday.at(calltime).do(assembly)
+    elif day == 'saturday':
+        if call == 'steele':
+            schedule.every().saturday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().saturday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().saturday.at(calltime).do(assembly)
+    elif day == 'sunday':
+        if call == 'steele':
+            schedule.every().sunday.at(calltime).do(steele)
+        elif call == 'fatigue':
+            schedule.every().sunday.at(calltime).do(fatigue)
+        elif call == 'assembly':
+            schedule.every().sunday.at(calltime).do(assembly)
+
 
 while True:
     schedule.run_pending()
